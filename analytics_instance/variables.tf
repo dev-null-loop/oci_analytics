@@ -61,33 +61,43 @@ variable "email_notification" {
   default     = null
 }
 
-# variable "feature_bundle"{
-# description="(Optional) The feature set of an Analytics instance."
-# variable "freeform_tags"{
-# description="(Optional) (Updatable) Free-form tags for this resource. Each tag is a simple key-value pair with no predefined name, type, or namespace. For more information, see [Resource Tags](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/resourcetags.htm).  Example: `{"Department": "Finance"}`
-# variable "kms_key_id"{
-# description="(Optional) OCID of the Oracle Cloud Infrastructure Vault Key encrypting the customer data stored in this Analytics instance. A null value indicates Oracle managed default encryption.
-# variable "network_endpoint_details"{
-# description="(Optional) Base representation of a network endpoint.
-#	variable "network_endpoint_type"{
-# description="(Required) The type of network endpoint.
-#	variable "network_security_group_ids"{
-# description="(Applicable when network_endpoint_type=PRIVATE) Network Security Group OCIDs for an Analytics instance.
-#	variable "subnet_id"{
-# description="(Required when network_endpoint_type=PRIVATE) The subnet OCID for the private endpoint.
-#	variable "vcn_id"{
-# description="(Required when network_endpoint_type=PRIVATE) The VCN OCID for the private endpoint.
-#	variable "whitelisted_ips"{
-# description="(Applicable when network_endpoint_type=PUBLIC) Source IP addresses or IP address ranges in ingress rules.
-#	variable "whitelisted_services"{
-# description="(Applicable when network_endpoint_type=PUBLIC) Oracle Cloud Services that are allowed to access this Analytics instance.
-#	variable "whitelisted_vcns"{
-# description="(Applicable when network_endpoint_type=PUBLIC) Virtual Cloud Networks allowed to access this network endpoint.
-#		variable "id"{
-# description="(Required when network_endpoint_type=PUBLIC) The Virtual Cloud Network OCID.
-#		variable "whitelisted_ips"{
-# description="(Applicable when network_endpoint_type=PUBLIC) Source IP addresses or IP address ranges in ingress rules.
-# variable "update_channel"{
-# description="(Optional) (Updatable) Analytics instance update channel.
-# variable "state"{
-# description="(Optional) (Updatable) The target state for the Analytics Instance. Could be set to `ACTIVE` or `INACTIVE`.
+variable "feature_bundle" {
+  description = "(Optional) The feature set of an Analytics instance."
+  type        = string
+  default     = null
+}
+
+variable "freeform_tags" {
+  description = "(Optional) (Updatable) Free-form tags for this resource. Each tag is a simple key-value pair with no predefined name, type, or namespace. For more information, see [Resource Tags](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/resourcetags.htm)."
+  type        = map(string)
+  default     = {}
+}
+
+variable "kms_key_id" {
+  description = "(Optional) OCID of the Oracle Cloud Infrastructure Vault Key encrypting the customer data stored in this Analytics instance. A null value indicates Oracle managed default encryption."
+  type        = string
+  default     = null
+}
+
+variable "network_endpoint_details" {
+  description = "(Optional) Base representation of a network endpoint."
+  type = object({
+    network_endpoint_type      = string
+    network_security_group_ids = optional(list(string))
+    subnet_id                  = string
+    vcn_id                     = string
+    whitelisted_ips            = optional(list(string))
+    whitelisted_services       = optional(list(string))
+    whitelisted_vcns = optional(object({
+      id              = string
+      whitelisted_ips = list(string)
+    }))
+  })
+  default = null
+}
+
+variable "update_channel" {
+  description = "(Optional) (Updatable) Analytics instance update channel."
+  type        = string
+  default     = null
+}
