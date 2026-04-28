@@ -22,17 +22,17 @@ resource "oci_analytics_analytics_instance" "this" {
     content {
       network_endpoint_type      = ned.value.network_endpoint_type
       network_security_group_ids = ned.value.network_security_group_ids
-      subnet_id                  = ned.value.subnet.id
+      subnet_id                  = ned.value.subnet_id
       vcn_id                     = ned.value.vcn_id
       whitelisted_ips            = ned.value.whitelisted_ips
       whitelisted_services       = ned.value.whitelisted_services
       dynamic "whitelisted_vcns" {
-	for_each = ned.value.whitelisted_vcns[*]
-	iterator = wv
-	content {
-	  id              = wv.value.id
-	  whitelisted_ips = wv.value.whitelisted_ips
-	}
+        for_each = try(ned.value.whitelisted_vcns, [])
+        iterator = wv
+        content {
+          id              = wv.value.id
+          whitelisted_ips = wv.value.whitelisted_ips
+        }
       }
     }
   }

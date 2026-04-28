@@ -25,6 +25,7 @@ variable "feature_set" {
 variable "idcs_access_token" {
   description = "(Required) IDCS access token identifying a stripe and service administrator user."
   type        = string
+  default     = null
 }
 
 variable "license_type" {
@@ -88,10 +89,10 @@ variable "network_endpoint_details" {
     vcn_id                     = string
     whitelisted_ips            = optional(list(string))
     whitelisted_services       = optional(list(string))
-    whitelisted_vcns = optional(object({
-      id              = string
-      whitelisted_ips = list(string)
-    }))
+    whitelisted_vcns = optional(list(object({
+      id              = optional(string)
+      whitelisted_ips = optional(list(string))
+    })))
   })
   default = null
 }
